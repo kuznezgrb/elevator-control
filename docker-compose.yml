@@ -12,12 +12,10 @@ services:
   database:
     image: postgres:11
     restart: always
-    volumes:
-    - ./database:/var/lib/postgresql/data
-    environment:
+    environment:    
+    - POSTGRES_USER=lift_control
+    - POSTGRES_DB=lift_control
     - POSTGRES_PASSWORD=gENKb9
-    - POSTGRES_USER=elevator_control
-    - POSTGRES_DB=elevator_control
   adminer:
     image: adminer
     restart: always

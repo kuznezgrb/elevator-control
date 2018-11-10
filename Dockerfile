@@ -49,6 +49,8 @@ RUN apt-get update && \
     php7.2-sockets \
     php7.2-ldap \
     php7.2-gd \
+    postgresql-client \
+    php7.2-pgsql \
     php7.2-xdebug && \
     echo "extension=apcu.so" | tee -a /etc/php/7.2/mods-available/cache.ini
 
