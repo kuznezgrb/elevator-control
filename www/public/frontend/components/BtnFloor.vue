@@ -1,15 +1,11 @@
 <template>
   <div class="btn-floor">
-    <div class="btn-floor__button">1</div>
-    <div class="btn-floor__button">2</div>
-    <div class="btn-floor__button">3</div>
-    <div class="btn-floor__button">4</div>
-    <div class="btn-floor__button">5</div>
-    <div class="btn-floor__button">6</div>
-    <div class="btn-floor__button">7</div>
-    <div class="btn-floor__button">8</div>
-    <div class="btn-floor__button">9</div>
-    <div class="btn-floor__button">10</div>
+    <div
+      v-for="n in maxFloor"
+      :key="n"
+      class="btn-floor__button"
+      @click="callLift(n)"
+    >{{ n }}</div>  
   </div>
 </template>
 
@@ -18,6 +14,17 @@ export default {
   name: 'BtnFloor',
   data() {
     return {}
+  },
+  computed: {
+    maxFloor() {
+      return this.$store.getters.maxFloor
+    }
+  },
+  methods: {
+    callLift(floor) {
+      this.$store.dispatch('callLift', floor)
+      this.$store.dispatch('getLifts', floor)
+    }
   }
 }
 </script>

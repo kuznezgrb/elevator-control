@@ -93,7 +93,7 @@ COPY ./www/ /var/www/
 COPY entrypoint.sh /entrypoint.sh
 WORKDIR /var/www/
 RUN chmod 755 /entrypoint.sh
-RUN find /  -name "*.sh" -exec dos2unix {} \; # recursively removes windows related stuff
+RUN find /  -name "entrypoint.sh" -exec dos2unix {} \; # recursively removes windows related stuff
 
 EXPOSE 80
 CMD ["/entrypoint.sh"]

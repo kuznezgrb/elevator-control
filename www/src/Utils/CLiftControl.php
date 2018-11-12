@@ -29,6 +29,8 @@ class CLiftControl implements ILiftControl{
      */
     public function callLift(int $floor): LiftOrders
     {
+        if($floor>$this->maxFloor||$floor<1) return null;
+
         $entityManager = $this->em;
 
         $nearestLift = $this->em

@@ -19,6 +19,42 @@ class LiftOrdersRepository extends ServiceEntityRepository
         parent::__construct($registry, LiftOrders::class);
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function  getStatLiftCount(){
+
+        return $this->createQueryBuilder('f')
+            ->select('f.lift_id, COUNT(:par)')
+            ->groupBy('f.lift_id')
+            ->setParameter('par', '*')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getStatLiftDirection(){
+        $liftOrders = $this->createQueryBuilder('f')
+            ->getQuery()
+            ->getResult();
+
+        $movementIterations = [];
+
+        foreach ($liftOrders as $liftOrder){
+
+            $movementIterations[$liftOrder->getLift()->getId()] = $movementIterations[$liftOrder->getLift()->getId()]??[];
+
+            $movementIterations[$liftOrder->getLift()->getId()][] =  $liftOrder->getFloor();
+        }
+
+        return $movementIterations;
+
+    }
+
     // /**
     //  * @return LiftOrders[] Returns an array of LiftOrders objects
     //  */

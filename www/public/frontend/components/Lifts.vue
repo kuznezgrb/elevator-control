@@ -1,20 +1,18 @@
 <template>
   <div class="lifts">
-    <div class="lifts__shaft">
-      <div class="lifts__lift lift">1 Этаж</div>
-      <div class="lifts__lift lift lift--active lift--arrived">1 Этаж</div>
-      <div class="lifts__lift lift">1 Этаж</div>
-    </div>
-    <div class="lifts__shaft">
-      <div class="lifts__lift lift">1 Этаж</div>
-      <div class="lifts__lift lift lift--active lift--arrived">1 Этаж</div>
-      <div class="lifts__lift lift">1 Этаж</div>
-    </div>   
-    <div class="lifts__shaft">
-      <div class="lifts__lift lift">1 Этаж</div>
-      <div class="lifts__lift lift lift--active lift--arrived">1 Этаж</div>
-      <div class="lifts__lift lift">1 Этаж</div>
-    </div>         
+    <div
+      v-for="lift in lifts"
+      :key="lift.id"
+      class="lifts__shaft"
+    >
+      <span> № {{ lift.number }} </span>
+      <div
+        v-for="n in maxFloor"
+        :key="n"
+        :class="{ 'lift--active' : n==lift.floor }"
+        class="lifts__lift lift"       
+      >{{ n }} Этаж</div>
+    </div>        
   </div>
 </template>
 
@@ -23,6 +21,17 @@ export default {
   name: 'Lifts',
   data() {
     return {}
+  },
+  computed: {
+    maxFloor() {
+      return this.$store.getters.maxFloor
+    },
+    lifts() {
+      return this.$store.getters.lifts
+    },
+    liftOrder() {
+      return this.$store.getters.liftOrder
+    }
   }
 }
 </script>
@@ -41,8 +50,8 @@ export default {
 }
 
 .lift {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border: solid 1px #000000;
   display: flex;
   justify-content: center;
@@ -50,10 +59,15 @@ export default {
 
   &--active {
     background-color: #000000;
+    color: #ffffff;
   }
 
   &--arrived {
     background-color: green;
   }
+}
+
+h2 {
+  margin-bottom: 10px;
 }
 </style>

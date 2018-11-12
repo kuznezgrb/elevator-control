@@ -14,21 +14,31 @@ class LiftControlController extends FOSRestController
 {
 
     /**
-     * @Rest\Post("/lift-control/callLift/", name="callLift")
+     * @Rest\Get("/lift-control/callLift/{floor}", name="callLift")
      * @param Request $request
      * @return View
      */
-    public function callLift(Request $request): View
+    public function callLift(int $floor): View
     {
-        $floor = $request->get('floor');
+        //$floor = $request->get('floor');
 
         $manager = $this->getDoctrine()->getManager();
 
         $liftControl = new CLiftControl(10, $manager);
 
         $liftOrder = $liftControl->callLift($floor);
+        $liftControl->callLift(1);
 
        return View::create($liftOrder, Response::HTTP_OK);
-
     }
+
+    /**
+     * @Rest\Get("/lift-control/maxFloor/", name="getMaxFloor")   
+     * @return View
+     */
+    public function getMaxFloor(): View
+    {
+        return View::create([ 'maxFloor'=>10 ], Response::HTTP_OK);
+    } 
+
 }

@@ -7,7 +7,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: 'Lift control',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -42,6 +42,8 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
+    baseURL: 'http://192.168.99.100:9000/api/',
+    browserBaseURL: 'http://192.168.99.100:9000/api/'
     // See https://github.com/nuxt-community/axios-module#options
   },
 

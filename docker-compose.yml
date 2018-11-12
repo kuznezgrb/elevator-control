@@ -4,6 +4,7 @@ services:
     build: ./
     links:
     - database
+    - redis
     volumes:
     - ./www:/var/www
     ports:
@@ -24,3 +25,5 @@ services:
     - 8000:8080
     links:
     - database
+  redis:
+    image: "redis"

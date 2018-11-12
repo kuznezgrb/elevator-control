@@ -2,10 +2,16 @@
   <section class="container">
     <div class="lifts-control">
       <div class="lifts-control__left">
+        <h2>Лифты:</h2>
         <lifts/>
       </div>
       <div class="lifts-control__right">
-        <btnFloor/>
+        <h2>Выбор этажа:</h2>
+        <btnFloor/>        
+        <div
+          v-if="liftOrder != null"
+          class="result"
+        >На ваш заказ прибыл лифт  № {{ liftOrder.lift.number }}</div>
       </div>      
     </div>
   </section>
@@ -19,6 +25,15 @@ export default {
   components: {
     lifts,
     btnFloor
+  },
+  computed: {
+    liftOrder() {
+      return this.$store.getters.liftOrder
+    }
+  },
+  fetch({ store, params }) {
+    store.dispatch('getMaxFloor')
+    store.dispatch('getLifts')
   }
 }
 </script>
@@ -56,5 +71,9 @@ export default {
 
 .lifts-control {
   display: flex;
+}
+
+.lifts-control__right {
+  padding-left: 20px;
 }
 </style>

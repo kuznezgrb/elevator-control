@@ -14,11 +14,11 @@ class LiftsController extends FOSRestController
     /**
      * @Rest\Get("/lifts", name="lifts")
      */
-    public function getLifts()
+    public function getLifts(): View
     {
         $lifts = $this->getDoctrine()
-            ->getRepository(Lifts::class)
-            ->findAll();
+            ->getRepository(Lifts::class)            
+            ->findBy([], [ 'number' => 'ASC']);
 
         return View::create($lifts, Response::HTTP_OK);
     }
