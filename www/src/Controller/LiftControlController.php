@@ -2,44 +2,33 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Interfaces\ILiftControl;
-use App\Entity\{ Lifts, LiftOrders };
+use App\Entity\Lifts;
+use FOS\RestBundle\View\View;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\{ Request, Response};
+use App\Utils\CLiftControl;
 
-class LiftControlController extends AbstractController implements ILiftControl
+class LiftControlController extends FOSRestController
 {
 
     /**
-     * callLift
-     *
-     * @Route("/lift/control/{floor}", name="lift_control")
-     * @param int $floor
-     *
-     * @return mixed id order
+     * @Rest\Post("/lift-control/callLift/", name="callLift")
+     * @param Request $request
+     * @return View
      */
-    public function callLift(int $floor)
+    public function callLift(Request $request): View
     {
-        $entityManager = $this->getDoctrine()->getManager();
+        $floor = $request->get('floor');
 
-        $nearestLift = $this->getDoctrine()
-            ->getRepository(Lifts::class)
-            ->getMinDifferenceFloors(10);
+        $manager = $this->getDoctrine()->getManager();
 
-        $liftOrder = new LiftOrders();
+        $liftControl = new CLiftControl(10, $manager);
 
-        $liftOrder->setFloor(10)
-            ->setLift($nearestLift);
+        $liftOrder = $liftControl->callLift($floor);
 
-        $entityManager->persist( $liftOrder);
+       return View::create($liftOrder, Response::HTTP_OK);
 
-        $entityManager->flush();
-
-
-
-        return $this->json([
-            'status' => '200',
-            'data' =>  $nearestLift
-        ]);
     }
 }

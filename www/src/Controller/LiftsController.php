@@ -2,19 +2,24 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Lifts;
+use FOS\RestBundle\View\View;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\{ Request, Response};
 
-class LiftsController extends AbstractController
+class LiftsController extends FOSRestController
 {
     /**
-     * @Route("/lifts", name="lifts")
+     * @Rest\Get("/lifts", name="lifts")
      */
-    public function index()
+    public function getLifts()
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/LiftsController.php',
-        ]);
+        $lifts = $this->getDoctrine()
+            ->getRepository(Lifts::class)
+            ->findAll();
+
+        return View::create($lifts, Response::HTTP_OK);
     }
 }

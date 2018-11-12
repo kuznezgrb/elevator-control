@@ -3,13 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\LiftOrders;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\View\View;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\{ Request, Response};
 
-class LiftOrdersController extends AbstractController
+class LiftOrdersController extends FOSRestController
 {
     /**
-     * @Route("/lift-orders/{id}", name="lift_orders")
+     * @Rest\Get("/lift-orders/{id}", name="lift_orders")
+     * @param int $id
+     * @return View
      */
     public function getLiftOrder(int $id)
     {
@@ -23,13 +28,6 @@ class LiftOrdersController extends AbstractController
             );
         }
 
-        return $this->json([
-            'status' => 200,
-            'data' => [
-                'id'=> $liftOrder->getId(),
-                'floor' => $liftOrder->getFloor(),
-                'lift' => $liftOrder->getLift()->getId()
-            ]
-        ]);
+        return View::create($liftOrder, Response::HTTP_OK);
     }
 }

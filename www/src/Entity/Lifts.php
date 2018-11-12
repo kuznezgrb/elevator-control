@@ -28,21 +28,9 @@ class Lifts
      */
     private $floor;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LiftOrders", mappedBy="liftId")
-     */
-    private $liftOrders;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LiftOrders", mappedBy="Lift")
-     */
-    private $Lift;
 
-    public function __construct()
-    {
-        $this->liftOrders = new ArrayCollection();
-        $this->Lift = new ArrayCollection();
-    }
+
 
     public function getId(): ?int
     {
@@ -73,36 +61,6 @@ class Lifts
         return $this;
     }
 
-    /**
-     * @return Collection|LiftOrders[]
-     */
-    public function getLiftOrders(): Collection
-    {
-        return $this->liftOrders;
-    }
-
-    public function addLiftOrder(LiftOrders $liftOrder): self
-    {
-        if (!$this->liftOrders->contains($liftOrder)) {
-            $this->liftOrders[] = $liftOrder;
-            $liftOrder->setLiftId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLiftOrder(LiftOrders $liftOrder): self
-    {
-        if ($this->liftOrders->contains($liftOrder)) {
-            $this->liftOrders->removeElement($liftOrder);
-            // set the owning side to null (unless already changed)
-            if ($liftOrder->getLiftId() === $this) {
-                $liftOrder->setLiftId(null);
-            }
-        }
-
-        return $this;
-    }
 
     
 }

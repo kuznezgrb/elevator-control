@@ -19,6 +19,22 @@ class LiftsRepository extends ServiceEntityRepository
         parent::__construct($registry, Lifts::class);
     }
 
+    public function getMinDifferenceFloors($floor) : Lifts{
+
+        $minDifferenceLift =  $this->createQueryBuilder('l')
+            ->select('l.id','abs( l.floor - :floor ) AS minDifferenceFloor')
+            ->setParameter('floor', $floor)
+            ->orderBy('minDifferenceFloor', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $lift = $this->find($minDifferenceLift[0]['id']);
+
+        return $lift;
+    }
+
     // /**
     //  * @return Lifts[] Returns an array of Lifts objects
     //  */
