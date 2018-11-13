@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\LiftOrders;
 use App\Entity\Lifts;
 use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

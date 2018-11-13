@@ -1,5 +1,10 @@
 <template>
   <section class="container">
+    <nav class="menu">  
+      <nuxt-link
+        to="/statistics"
+      >Статистика</nuxt-link>
+    </nav>   
     <div class="lifts-control">
       <div class="lifts-control__left">
         <h2>Лифты:</h2>
@@ -38,9 +43,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
 .container {
   min-height: 100vh;
+  flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,5 +81,16 @@ export default {
 
 .lifts-control__right {
   padding-left: 20px;
+}
+
+.menu {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  a {
+    font-size: 16px;
+    font-weight: bold;
+    color: green;
+  }
 }
 </style>

@@ -9,7 +9,9 @@ const store = () =>
     state: {
       maxFloor: 0,
       lifts: [],
-      liftOrder: null
+      liftOrder: null,
+      statLiftCount: [],
+      statLiftDirection: []
     },
     getters: {
       maxFloor(state) {
@@ -20,6 +22,12 @@ const store = () =>
       },
       liftOrder(state) {
         return state.liftOrder
+      },
+      statLiftCount(state) {
+        return state.statLiftCount
+      },
+      statLiftDirection(state) {
+        return state.statLiftDirection
       }
     },
     mutations: {
@@ -31,6 +39,12 @@ const store = () =>
       },
       setLiftOrder(state, val) {
         state.liftOrder = val
+      },
+      setStatLiftCount(state, val) {
+        state.statLiftCount = val
+      },
+      setStatLiftDirection(state, val) {
+        state.statLiftDirection = val
       }
     },
     actions: {
@@ -45,6 +59,14 @@ const store = () =>
       async callLift({ commit }, val) {
         let { data } = await this.$axios.get(`/lift-control/callLift/` + val)
         commit('setLiftOrder', data)
+      },
+      async setStatLiftCount({ commit }, val) {
+        let { data } = await this.$axios.get(`/statistics/statLiftCount/`)
+        commit('setStatLiftCount', data)
+      },
+      async setStatLiftDirection({ commit }, val) {
+        let { data } = await this.$axios.get(`/statistics/statLiftDirection`)
+        commit('setStatLiftDirection', data)
       }
     }
   })

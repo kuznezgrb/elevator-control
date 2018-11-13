@@ -24,13 +24,21 @@ class LiftOrdersRepository extends ServiceEntityRepository
      * @return mixed
      */
     public function  getStatLiftCount(){
-
-        return $this->createQueryBuilder('f')
-            ->select('f.lift_id, COUNT(:par)')
-            ->groupBy('f.lift_id')
-            ->setParameter('par', '*')
+        $liftOrders = $this->createQueryBuilder('f')
             ->getQuery()
             ->getResult();
+
+        $movementIterations = [];
+
+        foreach ($liftOrders as $liftOrder){
+
+            $movementIterations[$liftOrder->getLift()->getNumber()] = $movementIterations[$liftOrder->getLift()->getNumber()]??0;
+
+            $movementIterations[$liftOrder->getLift()->getNumber()]++;
+        }
+
+        return $movementIterations;
+
     }
 
 
@@ -41,16 +49,11 @@ class LiftOrdersRepository extends ServiceEntityRepository
         $liftOrders = $this->createQueryBuilder('f')
             ->getQuery()
             ->getResult();
-
         $movementIterations = [];
-
         foreach ($liftOrders as $liftOrder){
-
             $movementIterations[$liftOrder->getLift()->getId()] = $movementIterations[$liftOrder->getLift()->getId()]??[];
-
             $movementIterations[$liftOrder->getLift()->getId()][] =  $liftOrder->getFloor();
         }
-
         return $movementIterations;
 
     }

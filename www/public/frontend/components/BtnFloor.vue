@@ -21,9 +21,9 @@ export default {
     }
   },
   methods: {
-    callLift(floor) {
-      this.$store.dispatch('callLift', floor)
-      this.$store.dispatch('getLifts', floor)
+    async callLift(floor) {
+      await this.$store.dispatch('callLift', floor)
+      await this.$store.dispatch('getLifts', floor)
     }
   }
 }
