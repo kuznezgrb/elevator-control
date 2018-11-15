@@ -5,6 +5,9 @@
     <li>symfony</li>
     <li>nuxt js</li>
     <li>postgres</li>
+    <li>socket.io</li>
+    <li>node js</li>
+    <li>redis</li>
     </ul>
 
 Структура:

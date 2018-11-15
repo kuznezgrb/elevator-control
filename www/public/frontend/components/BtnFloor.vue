@@ -23,7 +23,6 @@ export default {
   methods: {
     async callLift(floor) {
       await this.$store.dispatch('callLift', floor)
-      await this.$store.dispatch('getLifts', floor)
     }
   }
 }

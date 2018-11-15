@@ -25,16 +25,27 @@
 <script>
 import lifts from '../components/Lifts'
 import btnFloor from '../components/BtnFloor'
+import socket from '~/plugins/socket.io.js'
 
 export default {
   components: {
     lifts,
     btnFloor
   },
+  sockets: {
+    connect: function() {
+      console.log('socket connected')
+    }
+  },
   computed: {
     liftOrder() {
       return this.$store.getters.liftOrder
     }
+  },
+  beforeMount() {
+    socket.on('updade', message => {
+      this.$store.dispatch('setLifts', JSON.parse(message))
+    })
   },
   fetch({ store, params }) {
     store.dispatch('getMaxFloor')

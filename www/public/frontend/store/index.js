@@ -60,6 +60,9 @@ const store = () =>
         let { data } = await this.$axios.get(`/lift-control/callLift/` + val)
         commit('setLiftOrder', data)
       },
+      setLifts({ commit }, val) {
+        commit('setLifts', val)
+      },
       async setStatLiftCount({ commit }, val) {
         let { data } = await this.$axios.get(`/statistics/statLiftCount/`)
         commit('setStatLiftCount', data)
