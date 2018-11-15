@@ -32,9 +32,9 @@ class LiftOrdersRepository extends ServiceEntityRepository
 
         foreach ($liftOrders as $liftOrder){
 
-            $movementIterations[$liftOrder->getLift()->getNumber()] = $movementIterations[$liftOrder->getLift()->getNumber()]??0;
+            $movementIterations[$liftOrder->getLift()->getNumber()][$liftOrder->getFloor()] = $movementIterations[$liftOrder->getLift()->getNumber()][$liftOrder->getFloor()]??0;
 
-            $movementIterations[$liftOrder->getLift()->getNumber()]++;
+            $movementIterations[$liftOrder->getLift()->getNumber()][$liftOrder->getFloor()]++;
         }
 
         return $movementIterations;
@@ -50,10 +50,45 @@ class LiftOrdersRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
         $movementIterations = [];
+
+        $buffer = [];
+        $direction = [];
+
         foreach ($liftOrders as $liftOrder){
-            $movementIterations[$liftOrder->getLift()->getId()] = $movementIterations[$liftOrder->getLift()->getId()]??[];
-            $movementIterations[$liftOrder->getLift()->getId()][] =  $liftOrder->getFloor();
+            $idLift = $liftOrder->getLift()->getId();
+            $floor = $liftOrder->getFloor();
+
+            $buffer[$idLift] = $buffer[$idLift]??[];
+
+            $countBuffer = count($buffer[$idLift]);
+
+            if($countBuffer > 1){
+
+                $direction = gmp_sign($buffer[$idLift][$countBuffer-2]-$buffer[$idLift][$countBuffer-1]);
+
+                $directionLift = gmp_sign($buffer[$idLift][$countBuffer-1]-$floor);
+
+                $comparison = $directionLift <=> $direction;
+
+                if($comparison == 0){
+                    $buffer[$idLift][] = $floor;
+                } else {
+                    $movementIterations[$idLift][] = $buffer[$idLift];
+                    $buffer[$idLift] = [];
+                    $buffer[$idLift][] = $floor;
+                }
+            } else {
+                $buffer[$idLift][] = $floor;
+            }
         }
+
+        foreach ($buffer as $lift=>$bufferItem){
+           if(count($bufferItem)>0){
+               $movementIterations[$lift][] = $bufferItem;
+           }
+        }
+
+
         return $movementIterations;
 
     }

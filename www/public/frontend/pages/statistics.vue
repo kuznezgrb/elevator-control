@@ -8,11 +8,20 @@
     <div class="stat">
       <div class="stat__left">
         <h2>Количество вызовов</h2>
-        <span
+        <div
           v-for="(stat, k) in statLiftCount"          
           :key="k"
           class="stat__item"
-        >Лифт № {{ k }} : {{ stat }} </span>
+        >
+          Лифт № {{ k }} :
+          <div 
+            v-for="(floorItem, f) in stat"
+            :key="f"
+            class="stat__floor" 
+          >
+            Этаж:  {{ f }} количество {{ floorItem }}      
+          </div>
+        </div>
       </div>
       <div class="stat__right">
         <h2>По итерациям</h2>
@@ -23,14 +32,20 @@
         >
           Лифт № {{ k }} : 
           <div clas="stat__direction">
-            <span
-              v-for="(direction, kDirection) in stat"          
-              :key="kDirection"
-              class="stat__direction-item"
+            <div
+              v-for="(directionList, directionK) in stat"          
+              :key="directionK"
             >
-              {{ direction }} 
-              <span class="stat__separator" >-></span>
-            </span>
+              <span
+                v-for="(direction, kDirection) in directionList"          
+                :key="kDirection"
+                class="stat__direction-item"
+              >
+                {{ direction }} 
+                <span class="stat__separator" >-></span>
+              </span>
+            </div>
+            
           </div> 
         </div>
       </div>
