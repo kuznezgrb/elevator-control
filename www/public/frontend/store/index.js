@@ -57,7 +57,9 @@ const store = () =>
         commit('setLifts', data)
       },
       async callLift({ commit }, val) {
-        let { data } = await this.$axios.get(`/lift-control/callLift/` + val)
+        let { data } = await this.$axios.post(`/lift-control/callLift/`,{
+          floor: val
+        })
         commit('setLiftOrder', data)
       },
       setLifts({ commit }, val) {

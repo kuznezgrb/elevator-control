@@ -4,7 +4,7 @@ var redis = require("redis");
 var clientRedis = redis.createClient("redis://redis:6379");
 
 server.listen(8888);
-
+console.log("start");
 clientRedis.on('connect', function() {
   console.log('connected');
 });

@@ -18,13 +18,14 @@ class LiftControlController extends FOSRestController
 {
 
     /**
-     * @Rest\Get("/lift-control/callLift/{floor}", name="callLift")
+     * @Rest\Post("/lift-control/callLift/", name="callLift")
      * @param Request $request
      * @return View
      */
-    public function callLift(int $floor): View
+    public function callLift(Request $request): View
     {
-        //$floor = $request->get('floor');
+        $data = json_decode($request->getContent(), true);
+        $floor  = $data['floor'];
 
         $manager = $this->getDoctrine()->getManager();
 
@@ -33,11 +34,9 @@ class LiftControlController extends FOSRestController
         $liftOrder = $liftControl->callLift($floor);
         $liftControl->callLift(1);
 
-
         $lifts = $this->getDoctrine()
             ->getRepository(Lifts::class)
             ->findBy([], [ 'number' => 'ASC']);
-
 
         $normalizer = new ObjectNormalizer();
         $normalizer->setIgnoredAttributes(array('age'));
@@ -46,9 +45,6 @@ class LiftControlController extends FOSRestController
 
         $redis = new СLiftRedis();
         $redis->setListsRedis($serializer->serialize($lifts, 'json'));
-
-
-
 
         return View::create($liftOrder, Response::HTTP_OK);
     }
